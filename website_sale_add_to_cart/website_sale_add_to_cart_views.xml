@@ -30,19 +30,41 @@
             inherit_id="website_sale.products_item"
             customize_show="True"
             active="True"
-            name="Quick add to Cart (product list)"
-        >
+            name="Quick add to Cart (product list)">
+
+            <xpath expr="//div[@class='card-body p-0 text-center o_wsale_product_information']" position="replace">
+
+              <div class="card-body p-0 text-left o_wsale_product_information">
+                  <div class="p-2 o_wsale_product_information_text">
+                      <h6 class="o_wsale_products_item_title">
+                          <a itemprop="name" t-att-href="product_href" t-att-content="product.name" t-field="product.name" />
+                          <a role="button" t-if="not product.website_published" t-att-href="product_href" class="btn btn-sm btn-danger" title="This product is unpublished.">Unpublished</a>
+                      </h6>
+                      <div class="product_price" itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer">
+                          <del t-attf-class="text-danger mr-2 {{'' if combination_info['has_discounted_price'] else 'd-none'}}" style="white-space: nowrap;" t-esc="combination_info['list_price']" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}" />
+                          <span t-if="combination_info['price']" t-esc="combination_info['price']" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                          <span itemprop="price" style="display:none;" t-esc="combination_info['price']" />
+                          <span itemprop="priceCurrency" style="display:none;" t-esc="website.currency_id.name" />
+                      </div>
+                  </div>
+                  <div class="o_wsale_product_btn"/>
+              </div>
+
+            </xpath>
+
+
             <xpath
-                expr="//div[@itemtype='http://schema.org/Product']"
-                position="inside"
-            >
+                expr="//form[@itemtype='http://schema.org/Product']"
+                position="inside">
                 <div
                     t-if="len(product.product_variant_ids) == 1"
-                    class="quick_add_to_cart input-group"
-                >
-                    <a t-attf-href="#" class="mb8 input-group-addon js_add_cart_json">
-                        <i class="fa fa-minus" />
-                    </a>
+                    class="quick_add_to_cart input-group">
+                    <div class="input-group-prepend">
+                      <a t-attf-href="#" class="btn btn-secondary js_add_cart_json">
+                          <i class="fa fa-minus" />
+                      </a>
+                    </div>
+
                     <input
                         type="text"
                         class="form-control"
@@ -50,12 +72,11 @@
                         t-att-data-product-id="product.product_variant_ids[0].id"
                         t-att-value="'0'"
                     />
-                    <a
-                        t-attf-href="#"
-                        class="mb8 input-group-addon float_left js_add_cart_json"
-                    >
-                        <i class="fa fa-plus" />
-                    </a>
+                    <div class="input-group-prepend">
+                      <a t-attf-href="#" class="btn btn-secondary float_left js_add_cart_json">
+                          <i class="fa fa-plus" />
+                      </a>
+                    </div>
                 </div>
             </xpath>
         </template>
