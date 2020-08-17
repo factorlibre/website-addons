@@ -69,9 +69,12 @@
                         type="text"
                         class="form-control js_update_cart_json"
                         style="text-align:center"
+                        name="set_qty"
                         t-att-data-product-id="product_id"
                         t-att-value="str(int(quantity)) if quantity else '0'"
                     />
+                    <input type="hidden" name="product_id"
+                    t-att-value="product_id"/>
                     <div class="input-group-prepend">
                       <a t-attf-href="#" class="btn btn-secondary float_left js_add_cart_json">
                           <i class="fa fa-plus" />

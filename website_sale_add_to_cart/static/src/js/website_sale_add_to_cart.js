@@ -4,8 +4,10 @@ odoo.define("website_sale_add_to_cart", function (require) {
     var publicWidget = require('web.public.widget');
 
     publicWidget.registry.WebsiteSale.include({
-        onClickAddCartJSON: function (ev) {
-            this._super(ev);
+        events: _.extend({}, publicWidget.registry.WebsiteSale.prototype.events || {}, {
+            'blur input.js_update_cart_json': 'onBlurCartJSON',
+        }),
+        _updateCartJSON: function (ev) {
             var $link = $(ev.currentTarget);
             var $input = $link.closest('.input-group').find("input");
 
@@ -41,6 +43,14 @@ odoo.define("website_sale_add_to_cart", function (require) {
                     $buttons.removeClass('disabled');
                 });
             }
+        },
+        onBlurCartJSON: function (ev) {
+            var $input = $(ev.currentTarget);
+            this._updateCartJSON(ev);
+        },
+        onClickAddCartJSON: function (ev) {
+            this._super(ev);
+            this._updateCartJSON(ev);
         }
     });
 });
